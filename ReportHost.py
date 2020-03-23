@@ -11,16 +11,25 @@ class ReportHost:
         self.end = end
         self.creds = creds
         self.vulns = []
+        self.host_crit = 'None'
 
 
 
+    def get_host_ip(self):
+        return self.ip
 
     def addVulns(self, vulns):
         self.vulns = vulns
 
+    def change_host_crit(self, crit):
+        self.hostCrit = crit
+
+    def get_host_crit(self):
+        return self.host_crit
 
     def get_all(self):
         records = ''
         for report_item in self.vulns:
             records += self.ip + ";" + self.mac+ ";" + self.os+ ";" + self.op_sys+ ";" +self.netbios+ ";" + self.fqdn + ";" + self.start+ ";" + self.end+ ";" +self.creds+ ";" + report_item.get_all()
         return records
+

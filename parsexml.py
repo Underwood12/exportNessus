@@ -15,16 +15,23 @@ root = tree.getroot()
 
 file = datetime.today().strftime('%H_%M_%S') + ".csv"
 
-def writeToCSV(host):
+def write_to_CSV(host):
     records = host.get_all()
     f = open(file, "a")
     f.write(records)
 
-def get_vulns(HOST):
-    vulns = []
-    #print(root[1][HOST].attrib)
-    for i in range(1, len(root[1][HOST])): # ignore hostproperties
+def set_host_crit(current_host, crit):
+    crit_rank = ['None', 'Low', 'Medium', 'High', 'Critical'] 
+    highest_crit = crit_rank.index(current_host.get_host_crit())
+    current_crit = crit_rank.index(crit)
+    if highest_crit < current_crit:
+        current_host.host_crit = crit
 
+     
+
+def get_vulns(HOST, current_host):
+    vulns = []
+    for i in range(1, len(root[1][HOST])): # ignore hostproperties
         plugin_id = root[1][HOST][i].get('pluginID')
         risk_factor = strip(root[1][HOST][i].find('risk_factor').text)
         plugin_name = root[1][HOST][i].get('pluginName')
@@ -33,6 +40,7 @@ def get_vulns(HOST):
         cvss_base_score = get_special_prop(HOST, i, 'cvss_base_score')
         cves = get_special_prop(HOST, i, 'cve')
         ri = ReportItem.ReportItem(plugin_id, risk_factor, plugin_name, plugin_family, plugin_type, cvss_base_score, cves)
+        set_host_crit(current_host, risk_factor)
         vulns.append(ri)
     return vulns
 
@@ -52,9 +60,9 @@ def get_special_prop(HOST, element, prop):
         else: return strip(res.text)
 
 
-    
 def strip(x):
     x = re.sub('\n\t\t\t\t\t', '', x)
+    x = re.sub('\n', ' - ', x)
     return re.sub('\n\t\t\t\t', '', x)
 
 def get_host_properties(HOST):
@@ -87,9 +95,8 @@ def main():
     initCSV()
     for HOST in range(len(root[1])):
         current_host = get_host_properties(HOST)
-        current_host.addVulns(get_vulns(HOST))
-        writeToCSV(current_host)
-    pass
+        current_host.addVulns(get_vulns(HOST, current_host))
+        write_to_CSV(current_host)
 
 if __name__== "__main__":
     main()
