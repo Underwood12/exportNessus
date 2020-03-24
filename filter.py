@@ -18,15 +18,8 @@ for row_index, row in enumerate(reader):
         column_letter = get_column_letter((column_index + 1))
         ws['%s%s'%(column_letter, (row_index + 1))].value = cell
 
-# wb = load_workbook(path, use_iterators=True)
-
-# sheet = wb.worksheets[0]
 
 
-
- # row_count = sheet.max_row
-# column_count = sheet.max_column
-
-ws.auto_filter.ref = "A1:H" + str(ws.max_row)
+ws.auto_filter.ref = "A1:" + chr(ws.max_column + 64) + str(ws.max_row)
 wb.save(filename = dest_filename)
 
