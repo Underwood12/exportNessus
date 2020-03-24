@@ -14,11 +14,16 @@ tree = ET.parse(filedialog.askopenfilename())
 root = tree.getroot()
 
 file = datetime.today().strftime('%H_%M_%S') + ".csv"
+crit_file = "crit_" + datetime.today().strftime('%H_%M_%S') + ".csv"
 
 def write_to_CSV(host):
     records = host.get_all()
     f = open(file, "a")
     f.write(records)
+
+def write_to_crit_CSV(h):
+    f = open(crit_file, "a")
+    f.write(h.ip + ";" + h.mac + ";" + h.os + ";" + h.op_sys + ";" + h.netbios + ";" + h.fqdn + ";" + h.creds + ";" + h.host_crit + "\n")
 
 def set_host_crit(current_host, crit):
     crit_rank = ['None', 'Low', 'Medium', 'High', 'Critical'] 
@@ -90,6 +95,8 @@ def initCSV():
     f = open(file, "a")
     f.write('Host IP;' + 'MAC Address;' + 'OS;'+'Operating system;' + 'Netbios;' + 'FQDN;' + 'Start;' + 'End;' + 'Credentialed;' + 'PluginID;' + 'Risk Factor;' + 'Plugin Name;' + 'Plugin Type;' + 'Plugin Family;' + 'CVSS Base Score;' + 'CVES\n' )
     f.close()
+    f = open(crit_file, "a")
+    f.write('Host IP;' + 'MAC Address;' + 'OS;'+'Operating system;' + 'Netbios;' + 'FQDN;' +  'Credentialed;' + 'Highest Crit\n')
 
 def main():
     initCSV()
@@ -97,6 +104,7 @@ def main():
         current_host = get_host_properties(HOST)
         current_host.addVulns(get_vulns(HOST, current_host))
         write_to_CSV(current_host)
+        write_to_crit_CSV(current_host)
 
 if __name__== "__main__":
     main()
