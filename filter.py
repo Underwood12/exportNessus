@@ -1,14 +1,19 @@
 import csv
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
+import tkinter as tk
+from tkinter import filedialog
 
-f = open(r'crit_11_06_19.csv')
+rt = tk.Tk()
+rt.withdraw()
+
+f = open(filedialog.askopenfilename())
 
 csv.register_dialect('colons', delimiter=';')
 
 reader = csv.reader(f, dialect='colons')
 wb = Workbook()
-dest_filename = r"crit_11_06_19.xlsx"
+dest_filename = "endfile.xlsx"
 
 ws = wb.worksheets[0]
 ws.title = "server criticality"

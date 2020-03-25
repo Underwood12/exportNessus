@@ -15,14 +15,9 @@ class ReportHost:
 
 
 
-    def get_host_ip(self):
-        return self.ip
-
     def addVulns(self, vulns):
         self.vulns = vulns
 
-    def change_host_crit(self, crit):
-        self.hostCrit = crit
 
     def get_host_crit(self):
         return self.host_crit
