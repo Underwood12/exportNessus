@@ -1,9 +1,8 @@
 import xml.etree.cElementTree as ET
 import ReportHost, ReportItem
 import re
-import time
 import tkinter as tk
-import parse_excel
+import excel_parse
 from tkinter import filedialog
 from datetime import datetime
 
@@ -127,7 +126,6 @@ def init():
         global root
         global file
         global crit_file
-        time.sleep(1)
         file = change_filename(f) + ".csv"
         #file = datetime.today().strftime('%H_%M_%S') + ".csv"
         #crit_file = "crit_" + datetime.today().strftime('%H_%M_%S') + ".csv"
@@ -141,7 +139,7 @@ def init():
 
             write_to_CSV(current_host)
             #write_to_crit_CSV(current_host)
-    filter.csvs_to_excel(files_to_excel)
+    excel_parse.csvs_to_excel(files_to_excel)
 
 
 def main():
