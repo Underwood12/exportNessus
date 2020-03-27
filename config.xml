@@ -3,11 +3,11 @@
 	
 	<filename_map>
 		<keyword>DIPLOBEL_DOMAIN_Win_2012_R2_Member_Server_SCAN_-_SLOW</keyword>
-		<name>diplobel_win_2012_r2_member_server_scan_slow</name>
+		<name>win_2012_r2_member_server_scan</name>
 	</filename_map>
 	<filename_map>
 		<keyword>DIPLOBEL_-_POSTS_-_DISCOVERY_SCAN_-_AFRICA</keyword>
-		<name>diplobel_posts_discovery_scan_africa</name>
+		<name>posts_discovery_scan_africa</name>
 	</filename_map>
 
 </nessus_parser_config>

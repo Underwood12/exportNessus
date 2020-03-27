@@ -4,27 +4,24 @@ from openpyxl.utils import get_column_letter
 import tkinter as tk
 from tkinter import filedialog
 
+
 rt = tk.Tk()
 rt.withdraw()
 
-f = open(filedialog.askopenfilename())
 
-csv.register_dialect('colons', delimiter=';')
-
-reader = csv.reader(f, dialect='colons')
-wb = Workbook()
-dest_filename = "endfile.xlsx"
-
-ws = wb.worksheets[0]
-ws.title = "server criticality"
-
-for row_index, row in enumerate(reader):
-    for column_index, cell in enumerate(row):
-        column_letter = get_column_letter((column_index + 1))
-        ws['%s%s'%(column_letter, (row_index + 1))].value = cell
+def csvs_to_excel(csvs):
+    wb = Workbook()
+    csv.register_dialect('colons', delimiter=';')
+    dest_filename = file_save()
+    for file in csvs:
+        tmp_ws = wb.create_sheet(file,csvs.index(file))
+        with open(file) as f:
+            reader = csv.reader(f,delimiter=';')
+            for row in reader:
+                tmp_ws.append(row)
+        tmp_ws.auto_filter.ref = "A1:" + chr(tmp_ws.max_column + 64) + str(tmp_ws.max_row)
+    wb.save(filename = dest_filename)
 
 
-
-ws.auto_filter.ref = "A1:" + chr(ws.max_column + 64) + str(ws.max_row)
-wb.save(filename = dest_filename)
-
+def file_save():
+    return filedialog.asksaveasfilename(defaultextension=".xlxs")

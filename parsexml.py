@@ -3,6 +3,7 @@ import ReportHost, ReportItem
 import re
 import time
 import tkinter as tk
+import filter
 from tkinter import filedialog
 from datetime import datetime
 
@@ -120,6 +121,7 @@ def change_filename(file_path):
 def init():
     read_config_file()
     csv_files = filedialog.askopenfilenames()
+    files_to_excel = []
     for f in csv_files:
         global tree
         global root
@@ -131,13 +133,15 @@ def init():
         #crit_file = "crit_" + datetime.today().strftime('%H_%M_%S') + ".csv"
         tree = ET.parse(f)
         root = tree.getroot()
+        files_to_excel.append(file)
         initCSV()
         for HOST in range(len(root[1])):
             current_host = get_host_properties(HOST)
             current_host.addVulns(get_vulns(HOST, current_host))
+
             write_to_CSV(current_host)
             #write_to_crit_CSV(current_host)
-
+    filter.csvs_to_excel(files_to_excel)
 
 
 def main():
