@@ -3,7 +3,7 @@ import ReportHost, ReportItem
 import re
 import time
 import tkinter as tk
-import filter
+import parse_excel
 from tkinter import filedialog
 from datetime import datetime
 
