@@ -14,7 +14,6 @@ def csvs_to_excel(csvs):
     wb = Workbook()
     csv.register_dialect('colons', delimiter=';')
     dest_filename = file_save()
-    print(dest_filename)
     for file in csvs:
         tmp_ws = wb.create_sheet(file,csvs.index(file))
         with open(file) as f:
@@ -31,7 +30,6 @@ def csvs_to_excel(csvs):
             df1 = pd.DataFrame(pd.read_csv(file, sep=";"))
              
             df = pd.pivot_table(df1, index="Plugin Name",values="Host IP", aggfunc="count")
-            print(df)
             df.to_excel(writer, "piv_" + file, index=True)
     
 

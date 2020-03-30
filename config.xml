@@ -9,6 +9,17 @@
 		<keyword>DIPLOBEL_-_POSTS_-_DISCOVERY_SCAN_-_AFRICA</keyword>
 		<name>posts_discovery_africa</name>
 	</filename_map>
-
+	<filename_map>
+		<keyword>DIPLOSEC_-_Basic_network_scan_192_168_30_X_24</keyword>
+		<name>basic_network_192_168_30_X</name>
+	</filename_map>
+	<filename_map>
+		<keyword>DIPLOSEC_-_Ping_and_Open_Ports_check</keyword>
+		<name>open_ports_check</name>
+	</filename_map>
+	<filename_map>
+		<keyword>DIPLOSEC_-_Windows_Server_2012_MS_Auth_Scan</keyword>
+		<name>server_2012_ms_auth</name>
+	</filename_map>
 </nessus_parser_config>
 
