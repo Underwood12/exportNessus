@@ -19,7 +19,11 @@
 	</filename_map>
 	<filename_map>
 		<keyword>DIPLOSEC_-_Windows_Server_2012_MS_Auth_Scan</keyword>
-		<name>server_2012_ms_auth</name>
+		<name>member_server_2012_auth</name>
+	</filename_map>
+	<filename_map>
+		<keyword>DIPLOBEL_-_AUTH_SCAN_ALL_DOMAIN_CONTROLLERS</keyword>
+		<name>dc_auth</name>
 	</filename_map>
 </nessus_parser_config>
 
