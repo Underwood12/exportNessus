@@ -22,7 +22,8 @@ def csvs_to_excel(csvs):
                 tmp_ws.append(row)
         tmp_ws.auto_filter.ref = "A1:" + chr(tmp_ws.max_column + 64) + str(tmp_ws.max_row)
     wb.save(filename = dest_filename)
-   #redo all worksheets in pivot mode 
+ 
+ #redo all worksheets in pivot mode 
     
     for file in csvs:
         with pd.ExcelWriter(dest_filename, engine="openpyxl") as writer:

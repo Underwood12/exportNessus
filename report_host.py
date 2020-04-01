@@ -1,6 +1,6 @@
 import report_item
 class report_host:
-    def __init__(self, ip, mac, os, op_sys, netbios, fqdn, start, end, creds, bus_crit):
+    def __init__(self, ip, mac, os, op_sys, netbios, fqdn, start, end, creds, bus_crit, ip_type):
         self.ip = ip
         self.mac = mac
         self.os = os
@@ -11,7 +11,8 @@ class report_host:
         self.end = end
         self.creds = creds
         self.vulns = []
-        self.bus_crit = 'High by Default' # default business criticality is hight cfr. risk_matrix
+        self.bus_crit = bus_crit # default business criticality is hight cfr. risk_matrix
+        self.ip_type = ip_type
         self.host_crit = 'None'
 
 
@@ -26,6 +27,6 @@ class report_host:
     def get_all(self):
         records = ''
         for report_item in self.vulns:
-            records += self.ip + ";" + self.mac+ ";" + self.os+ ";" + self.op_sys+ ";" +self.netbios+ ";" + self.fqdn + ";" + self.start+ ";" + self.end+ ";" +self.creds+ ";"+ self.bus_crit + ";" + report_item.get_all()
+            records += self.ip + ";" + self.mac+ ";" + self.os+ ";" + self.op_sys+ ";" +self.netbios+ ";" + self.fqdn + ";" + self.start+ ";" + self.end+ ";" + str(self.creds)+ ";"+ self.bus_crit + ";" + str(self.ip_type) + ";" + report_item.get_all()
         return records
 

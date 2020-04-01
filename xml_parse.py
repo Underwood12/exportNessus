@@ -1,4 +1,5 @@
 import xml.etree.cElementTree as ET
+from distutils.util import strtobool
 import report_item, report_host, risk_matrix_handler
 import re
 import tkinter as tk
@@ -33,6 +34,7 @@ def write_to_CSV(host):
 def write_to_crit_CSV(h):
     f = open(crit_file, "a")
     f.write(h.ip + ";" + h.mac + ";" + h.os + ";" + h.op_sys + ";" + h.netbios + ";" + h.fqdn + ";" + h.creds + ";" + h.host_crit + "\n")
+
 def set_host_crit(current_host, crit):
     crit_rank = ['None', 'Low', 'Medium', 'High', 'Critical']
     highest_crit = crit_rank.index(current_host.get_host_crit())
@@ -52,7 +54,8 @@ def get_vulns(HOST, current_host):
         cvss_base_score = get_special_prop(HOST, i, 'cvss_base_score')
         available_exploit = check_exploit_availability(get_special_prop(HOST, i, 'exploitability_ease'))
         cves = get_special_prop(HOST, i, 'cve')
-        ri = report_item.report_item(plugin_id, risk_factor, plugin_name, plugin_family, plugin_type, cvss_base_score, available_exploit, cves)
+        risk = risk_matrix_handler.calculate_risk(cvss_base_score, current_host.bus_crit, available_exploit, current_host.creds, current_host.ip_type)
+        ri = report_item.report_item(plugin_id, risk_factor, plugin_name, plugin_family, plugin_type, cvss_base_score, available_exploit, risk , cves)
         set_host_crit(current_host, risk_factor)
         vulns.append(ri)
     return vulns
@@ -93,7 +96,8 @@ def get_host_properties(HOST):
         elif root[1][HOST][0][i].get('name') == 'operating-system':
             op_sys = strip(root[1][HOST][0][i].text)
         elif root[1][HOST][0][i].get('name') == 'Credentialed_Scan':
-            creds = strip(root[1][HOST][0][i].text)
+            creds = bool(strtobool(strip(root[1][HOST][0][i].text)))
+            print(creds, bool(creds))
         elif root[1][HOST][0][i].get('name') == 'host-ip':
             ip = strip(root[1][HOST][0][i].text)
         elif root[1][HOST][0][i].get('name') == 'HOST_START':
@@ -101,11 +105,12 @@ def get_host_properties(HOST):
         elif root[1][HOST][0][i].get('name') == 'HOST_END':
             end = strip(root[1][HOST][0][i].text)
     bus_crit = risk_matrix_handler.get_crit_from(ip)
-    return report_host.report_host(ip, '', os, op_sys, netbios, fqdn, start, end, creds, bus_crit)
+    ip_type = risk_matrix_handler.is_ip_private(ip)
+    return report_host.report_host(ip, '', os, op_sys, netbios, fqdn, start, end, creds, bus_crit, ip_type)
 
 def initCSV():
     f = open(file, "a")
-    f.write('Host IP;' + 'MAC Address;' + 'OS;'+'Operating system;' + 'Netbios;' + 'FQDN;' + 'Start;' + 'End;' + 'Credentialed;' + 'Business criticality;'+ 'PluginID;' + 'Risk Factor;' + 'Plugin Name;' + 'Plugin Type;' + 'Plugin Family;' + 'CVSS Base Score;'  + 'Exploit Available;'+ 'CVES\n' )
+    f.write('Host IP;' + 'MAC Address;' + 'OS;'+'Operating system;' + 'Netbios;' + 'FQDN;' + 'Start;' + 'End;' + 'Credentialed;' + 'Business criticality;'+ 'IP type;' + 'PluginID;' + 'Risk Factor;' + 'Plugin Name;' + 'Plugin Type;' + 'Plugin Family;' + 'CVSS Base Score;'  + 'Exploit Available;'+ 'Risk;' + 'CVES\n' )
     f.close()
     #f = open(crit_file, "a")
     #f.write('Host IP;' + 'MAC Address;' + 'OS;'+'Operating system;' + 'Netbios;' + 'FQDN;' +  'Credentialed;' + 'Highest Crit\n')
