@@ -65,7 +65,6 @@ def calculate_risk(cvss, bus_crit,available_exploit, creds, ip_is_private):
     score = 0
     if available_exploit: score += list[1]
     else: score += list[0]
-    print(score)
     score += set_access_score(creds, ip_is_private)
     return score
 

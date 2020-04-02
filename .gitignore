@@ -4,5 +4,5 @@
 *.xml
 *.7z
 *.xlsx
-!config.xml
+config.xml
 __pycache__
